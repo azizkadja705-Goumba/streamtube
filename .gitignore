@@ -90,3 +90,4 @@ docker-data/
 # Test artifacts
 playwright-report/
 test-results/
+*.tsbuildinfo
