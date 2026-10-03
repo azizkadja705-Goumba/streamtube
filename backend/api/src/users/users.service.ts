@@ -6,6 +6,8 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll() {
-    return this.prisma.db.orm.public.User.all();
+   const users = await this.prisma.db.orm.public.User.all();
+
+return users.map(({ password, ...user }) => user);
   }
 }
