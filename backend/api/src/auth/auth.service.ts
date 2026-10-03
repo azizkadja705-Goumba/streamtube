@@ -1,6 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import argon2 from 'argon2';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto/register.dto.js';
 
 @Injectable()
@@ -32,6 +33,30 @@ export class AuthService {
       username: dto.username,
       password: passwordHash,
     });
+
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+      createdAt: user.createdAt,
+    };
+  }
+
+  async login(dto: LoginDto) {
+    const user = await this.prisma.db.orm.public.User.first({
+      email: dto.email,
+    });
+
+    if (!user) {
+      throw new ConflictException('E-mail ou mot de passe incorrect.');
+    }
+
+    const passwordValid = await argon2.verify(user.password, dto.password);
+
+    if (!passwordValid) {
+      throw new ConflictException('E-mail ou mot de passe incorrect.');
+    }
 
     return {
       id: user.id,
