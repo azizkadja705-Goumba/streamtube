@@ -1,0 +1,16 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: streamtube-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.15
+    container_name: streamtube-meilisearch
+    restart: unless-stopped
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+    ports:
+      - "7700:7700"
