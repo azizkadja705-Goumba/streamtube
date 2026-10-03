@@ -1,10 +1,21 @@
 // use prisma-8
 
+enum UserRole {
+  USER
+  CREATOR
+  ARTIST
+  MANAGER
+  LABEL
+  ADMIN
+  OWNER
+}
+
 model User {
   id        String   @id
   email     String   @unique
   password  String
   username  String   @unique
+  role      UserRole @default(USER)
   createdAt DateTime @default(now())
-  updatedAt DateTime
-}
+ updatedAt temporal.updatedAt()
+ }
